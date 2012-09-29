@@ -31,8 +31,9 @@ def getArrivals(stopID):
         estimated = arrival.getAttribute("estimated")[:-3]
         if estimated == "":
             estimated = arrival.getAttribute("scheduled")[:-3]
-        mins = (long(estimated) - int(time())) / 60
-        arrivals.append("%s arriving in %s minutes" % (sign, mins))
+        if estimated:
+            mins = (long(estimated) - int(time())) / 60
+            arrivals.append("%s arriving in %s minutes" % (sign, mins))
 
     return arrivals
 
