@@ -91,3 +91,52 @@ def stopsByAddr(address):
     """
     return getStops(getLatLong(address))
 
+def getAddress(ll):
+    """
+    getAddress
+
+    Returns an address estimated from lat long pair
+
+    :param:     ll      { lat, lng }
+    :return:    str
+    """
+    url = "%slatlng=%s,%s&sensor=false" % (GOOG_URI, ll['lat'], ll['lng'])
+    f = urlopen(url)
+    response = f.read()
+
+    data = json.loads(response)
+    return data['results'][0]['formatted_address']
+
+def busLastSeen(stopID, route):
+    """
+    busLastSeen
+
+    Given a stopID and a route returns the last seen location of the bus
+
+    :param:     stopID  int
+    :param:     route   int
+    :return:    str
+    """
+    url = "%sarrivals?appID=%s&locIDs=%s" % (BASE_URI, APP_ID, stopID)
+    f = urlopen(url)
+    response = f.read()
+
+    dom = parseString(response)
+    arrivalElems = dom.getElementsByTagName("arrival")
+
+    for arrival in arrivalElems:
+        arrivalRoute = arrival.getAttribute("route")
+        if arrivalRoute == str(route):
+            pos = arrival.getElementsByTagName("blockPosition")[0]
+            seenAt = pos.getAttribute("at")[:-3]
+            mins = (int(time()) - long(seenAt)) / 60
+            location = getAddress(
+                {
+                    'lat' : pos.getAttribute("lat"),
+                    'lng' : pos.getAttribute("lng")
+                }
+            )
+            return "Your bus was last seen on %s %s minutes ago" % (location, mins)
+
+    return "I'm sorry I don't have that information"
+

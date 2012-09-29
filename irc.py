@@ -57,6 +57,15 @@ class IRCConnection():
                 "PRIVMSG %s :%s\n" % (self.channel, stop)
             )
 
+    def lastSeen(self, command):
+        args = command.split()
+
+        result = api.busLastSeen(args[0], args[1])
+
+        self.ircsock.send(
+                "PRIVMSG %s :%s\n" % (self.channel, result)
+            )
+
     def eventLoop(self):
         ircmsg = self.ircsock.recv(2048).strip('\n\r')
         print(ircmsg)
@@ -77,8 +86,14 @@ class IRCConnection():
                     self.arrivals(command[9:])
                 elif command[:7].lower() == "stopsby":
                     self.stopsby(command[8:])
+                elif command[:8].lower() == "lastseen":
+                    self.lastSeen(command[9:])
                 elif command[:4].lower() == "quit":
                     return True
+                else:
+                    self.ircsock.send(
+                            "PRIVMSG %s :wat?\n" % (self.channel,)
+                        )
 
         return False
 
