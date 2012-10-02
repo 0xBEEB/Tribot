@@ -21,7 +21,7 @@ Returns a list of stops near the given address.
 
 Example:
 
-    /msg STOPSBY 1900 sw main
+    /msg trimetbot STOPSBY 1900 sw main
 
 Response:
 
@@ -40,7 +40,7 @@ then the arrival time is estimated based off of the vehicles current location.
 
 Example:
 
-    /msg ARRIVALS 9820
+    /msg trimetbot ARRIVALS 9820
 
 Response:
 
@@ -58,7 +58,7 @@ passed since the gps reading was taken.
 
 Example:
 
-    /msg LASTSEEN 5020 15
+    /msg trimetbot LASTSEEN 5020 15
 
 Response:
 
@@ -72,7 +72,7 @@ Returns a list of commands.
 
 Example:
 
-    /msg HELP
+    /msg trimetbot HELP
 
 Response:
 
@@ -86,7 +86,7 @@ Returns information about Tribot.
 
 Example:
 
-    /msg ABOUT
+    /msg trimetbot ABOUT
 
 Response:
 
