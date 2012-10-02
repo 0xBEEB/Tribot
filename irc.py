@@ -22,22 +22,30 @@ class IRCConnection():
 
         quit = False
         while not quit:
-            quit = self.eventLoop()
+            try:
+                quit = self.eventLoop()
+            except:
+                pass
+
 
     def ping(self):
         self.ircsock.send("PONG :Pong\n")
 
+
     def sendmsg(self, chan, msg):
         self.ircsock.send("PRIVMSG %s :%s\n" % (chan, msg))
 
+
     def joinchan(self, chan):
         self.ircsock.send("JOIN %s\n" % chan)
+
 
     def hello(self, chan=None):
         if not chan:
             chan = self.channel
 
         self.ircsock.send("PRIVMSG %s :Hello!\n" % (chan,))
+
 
     def usage(self, chan=None):
         if not chan:
@@ -51,12 +59,13 @@ class IRCConnection():
         msg += "lastSeen <stopID> <BusRoute>\n"
         self.ircsock.send(msg)
 
+
     def about(self, chan=None):
         if not chan:
             chan = self.channel
 
         msg_base = "PRIVMSG %s :" % (chan,)
-        msg1 = msg_base + "Trailbot by Thomas Schreiber <thomas@ubiquill.com>\n"
+        msg1 = msg_base + "Trilbot by Thomas Schreiber <thomas@ubiquill.com>\n"
         msg2 = msg_base + "Find me on github at http://github.com/ubiquill/tribot\n"
         msg3 = msg_base + "Try '\msg tribot help' for a list of commands\n"
         self.ircsock.send(msg1)
@@ -82,6 +91,7 @@ class IRCConnection():
                     "PRIVMSG %s :No results found\n" % (chan,)
                 )
 
+
     def stopsby(self, address, chan=None):
         if not chan:
             chan = self.channel
@@ -98,6 +108,7 @@ class IRCConnection():
                     "PRIVMSG %s :No results found\n" % (chan,)
                 )
 
+
     def lastSeen(self, command, chan=None):
         if not chan:
             chan = self.channel
@@ -113,27 +124,36 @@ class IRCConnection():
                 "PRIVMSG %s :%s\n" % (chan, result)
             )
 
+
     def eventLoop(self):
         ircmsg = self.ircsock.recv(2048).strip('\n\r')
         print(ircmsg)
 
+        # Check if server is pinging
         if ircmsg.find("PING :") != -1:
             self.ping()
 
+        # Is this a message I can see?
         pm = ircmsg.find("PRIVMSG")
         if pm != -1:
             command = ""
-            if ircmsg[pm + 8:pm + 8 + 6] == settings.NICK:
+
+            startOffset = pm + 8 # Pos of "PRIVMSG" plus its len and a space
+            endOffset = startOffset + len(settings.NICK)
+            if ircmsg[startOffset:endOffset] == settings.NICK:
                 # This is a priv msg
                 username = ircmsg[1:ircmsg.find("!")]
                 chan = username
-                command = ircmsg[pm + 8 + 8:]
+                # Command is now just what the other party entered
+                command = ircmsg[startOffset + len(settings.NICK) + 2:]
             else:
                 # This is in the channel
-                actMsg = ircmsg[pm + 8 + len(self.channel) + 2:]
+                # actMsg is now what the other party entered
+                actMsg = ircmsg[startOffset + len(self.channel) + 2:]
 
                 # Am I being addressed?
                 if actMsg[:len(settings.NICK)] == settings.NICK:
+                    # Command without my nick and the following space
                     command = actMsg[len(settings.NICK) + 1:]
                     chan = self.channel
 
