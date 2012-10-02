@@ -30,6 +30,7 @@ Response:
     ID: 5019, Eastbound on SW Salmon & 20th
     ID: 5018, Westbound on SW Salmon & 20th
 
+-
 
     ARRIVALS <stopID>
 
@@ -46,6 +47,7 @@ Response:
     MAX  Red Line to City Center & Beaverton TC arriving in 13 minutes
     MAX  Blue Line to Hillsboro arriving in 13 minutes
 
+-
 
     LASTSEEN <stopID> <route#>
 
@@ -61,6 +63,7 @@ Response:
 
     Your bus was last seen on 22 NW 23rd Ave, Portland, OR 97210, USA 0 minutes and 55 seconds ago
 
+-
 
     HELP
 
@@ -74,6 +77,7 @@ Response:
 
     help, about, arrivals <stopid>, stopsby <address>, lastSeen <stopID> <BusRoute>
 
+-
 
     ABOUT
 

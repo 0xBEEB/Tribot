@@ -190,7 +190,7 @@ def busLastSeen(stopID, route):
                 )
                 return "Your bus was last seen on %s %s minutes and %s seconds ago" % (location, mins, secs)
         except IndexError:
-            return None
+            pass
 
     return "I'm sorry I don't have that information"
 
