@@ -10,7 +10,8 @@ Google Maps gecocode API.
 
 ## Usage
 
-Tribot currently resides on Freenode IRC and can be messaged for information.
+Tribot currently resides on Freenode IRC with the nick "trimetbot" and on 
+irc.cat.pdx.edu with the nick "tribot". Tribot can be messaged for information.
 
 ### Commands
 
