@@ -6,7 +6,58 @@ import json
 from settings import APP_ID
 
 BASE_URI = 'http://developer.trimet.org/ws/V1/'
+BASE_URI2 = 'http://developer.trimet.org/ws/v2/'
 GOOG_URI = 'http://maps.googleapis.com/maps/api/geocode/json?'
+
+
+def getArrivals2(stopID):
+    """
+    getArrivals
+
+    Returns the estimated arrival times of the buses for a given stop ID
+    !!! This endpoint is BETA !!!
+
+    :param:     stopID  Long
+    :return:    time    time_t
+    """
+    url = "%sarrivals/appid/%s/locids/%s/json/false" % (BASE_URI2, APP_ID, stopID)
+
+    try:
+        f = urlopen(url)
+    except HTTPError:
+        return None
+
+    response = f.read()
+
+    dom = parseString(response)
+    arrivalElems = dom.getElementsByTagName("arrival")
+
+    arrivals = []
+    for arrival in arrivalElems:
+        try:
+            sign = arrival.getAttribute("fullSign")
+            estimated = arrival.getAttribute("estimated")[:-3]
+            if estimated == "":
+                estimated = arrival.getAttribute("scheduled")[:-3]
+            if estimated:
+                mins = (long(estimated) - int(time())) / 60
+                outString = "%s arriving in %s minutes" % (sign, mins)
+
+                currentLoad = arrival.getAttribute("loadPercentage")
+                if len(currentLoad) > 0 and int(currentLoad) >= 90:
+                    outString += " VERY FULL"
+                inCongestion = arrival.getAttribute("inCongestion")
+                if inCongestion == "true":
+                    outString += " STUCK IN TRAFFIC"
+                detoured = arrival.getAttribute("detour")
+                if detoured == "true":
+                    outString += " DETOURED"
+                arrivals.append(outString)
+        except IndexError:
+            pass
+
+
+    return arrivals
 
 
 def getArrivals(stopID):

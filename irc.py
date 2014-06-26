@@ -79,7 +79,7 @@ class IRCConnection():
 
         stopID = command.strip('\n\r')
 
-        arrivals = api.getArrivals(stopID)
+        arrivals = api.getArrivals2(stopID)
 
         if len(arrivals) > 0:
             for arrival in arrivals:
