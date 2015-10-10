@@ -1,8 +1,8 @@
 # Tribot
 
-by Thomas Schreiber <thomas@ubiquill.com>
+by Briar Rose Schreiber <ubiquill@riseup.net>
 
-Copyright (c) 2012 Thomas Schreiber
+Copyright (c) 2012 Briar Rose Schreiber
 
 
 ## License
@@ -102,7 +102,7 @@ Example:
 
 Response:
 
-    Tribot by Thomas Schreiber <thomas@ubiquill.com>
+    Tribot by Briar Rose Schreiber <ubiquill@riseup.net>
     Find me on github at http://github.com/ubiquill/tribot
     Try '\msg tribot help' for a list of commands
  

@@ -65,7 +65,7 @@ class IRCConnection():
             chan = self.channel
 
         msg_base = "PRIVMSG %s :" % (chan,)
-        msg1 = msg_base + "Tribot by Thomas Schreiber <thomas@ubiquill.com>\n"
+        msg1 = msg_base + "Tribot by Briar Rose Schreiber <ubiquill@riseup.net>\n"
         msg2 = msg_base + "Find me on github at http://github.com/ubiquill/tribot\n"
         msg3 = msg_base + "Try '\msg tribot help' for a list of commands\n"
         self.ircsock.send(msg1)
